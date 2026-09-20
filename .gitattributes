@@ -1,0 +1,50 @@
+# ============================================================
+# 换行符与文件类型规范 —— 保证 Windows / macOS / Linux 协作一致
+# ============================================================
+
+# 默认：由 Git 自动判断文本文件
+* text=auto
+
+# ---------- Windows 批处理：必须 CRLF ----------
+# cmd.exe 解析含多行 if( ) 块、goto 标签的 .bat 时，
+# LF 换行会导致命令被截断或标签匹配失败，务必锁定 CRLF。
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# ---------- Shell 脚本：必须 LF ----------
+*.sh text eol=lf
+
+# ---------- 源码与文本：统一 LF ----------
+*.py  text eol=lf
+*.md  text eol=lf
+*.txt text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+*.csv text eol=lf
+*.html text eol=lf
+*.css  text eol=lf
+*.js   text eol=lf
+.gitignore     text eol=lf
+.gitattributes text eol=lf
+
+# ---------- 二进制文件：不做任何换行转换 ----------
+*.safetensors binary
+*.pt   binary
+*.pth  binary
+*.bin  binary
+*.exe  binary
+*.dll  binary
+*.so   binary
+*.sqlite3 binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.pdf  binary
+
+# ---------- 语言统计（GitHub 语言占比更准确）----------
+data/knowledge_base/** linguist-documentation
+docs/** linguist-documentation
