@@ -1,36 +1,31 @@
 # 企业内部智能客服助手 - Python 依赖
 # 建议 Python >= 3.10
+# 安装: pip install -r requirements.txt
 
 # ---------- Web 框架 ----------
 fastapi>=0.110.0
 uvicorn[standard]>=0.29.0
 streamlit>=1.36.0
 python-multipart>=0.0.9
-
-# ---------- 配置与工具 ----------
-pyyaml>=6.0
 pydantic>=2.6
+
+# ---------- 工具 ----------
 loguru>=0.7.2
 tqdm>=4.66
+requests>=2.31.0            # app/webui.py 与 app/chat_engine.py 通过 HTTP 调用 Ollama
 
 # ---------- NLP / 向量检索 ----------
 torch>=2.1.0
 transformers>=4.42.0
 sentence-transformers>=3.0.0
-FlagEmbedding>=1.2.10          # bge-reranker
-chromadb>=0.5.0               # 本地向量库
+chromadb>=0.5.0             # 本地向量库
 
-# ---------- LLM 推理 ----------
-# 本地推理推荐用 vLLM 单独启动 OpenAI 兼容服务：
+# ---------- 模型下载 ----------
+huggingface_hub>=0.23.0     # scripts/download_models.py
+
+# ---------- LLM 推理（可选）----------
+# 默认用 Ollama 承载生成模型（见 README），只需 requests 调 HTTP，无需额外 Python 包。
+# 若改用 vLLM 自建 OpenAI 兼容服务：
 #   python -m vllm.entrypoints.openai.api_server --model Qwen3-8B-Instruct-AWQ --quantization awq_marlin
-# 这里只需 openai SDK 客户端即可
-openai>=1.30.0
-
-# ---------- 评估与测试 ----------
-scikit-learn>=1.4.0
-pytest>=8.0.0
-pandas>=2.2.0
-
-# ---------- 可选 ----------
-# langchain>=0.2.0
-# langgraph>=0.1.0
+# 再取消下面这行注释：
+# openai>=1.30.0
