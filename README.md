@@ -1,5 +1,7 @@
 # 企业内部智能客服助手
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 > **BERT 意图分类 × 轻量 RAG × Ollama LLM 生成**
 > 本地部署 · 8 大业务领域 + 其他闲聊 · 18 万训练数据 · 局域网 / 公网可访问
 
@@ -102,7 +104,9 @@ assistant/
 ├── start_fastapi.bat         # 只启动 FastAPI 8001
 ├── start_public.bat          # FastAPI + cpolar 公网穿透
 ├── README.md                 # 本文件
+├── CONTRIBUTING.md           # 协作规范（分支 / 提交 / PR 流程）
 ├── TECH_STACK.md             # 技术栈详解与设计决策
+├── LICENSE                   # MIT 开源协议
 ├── requirements.txt          # Python 依赖
 ├── .gitignore                # 忽略规则（模型/索引/日志）
 ├── .gitattributes            # 换行符规范（.bat 强制 CRLF）
@@ -188,3 +192,16 @@ python -c "import requests,json; print(requests.post('http://localhost:8001/api/
 | BERT 推理 | <10ms |
 | LLM 延迟 | 2-3s |
 | 并发能力 | uvicorn 多 worker（当前 `--workers 2`），多用户并发提问互不阻塞 |
+
+## 📄 开源协议
+
+本项目采用 [MIT License](LICENSE)，版权归 **oom-alchemists** 所有。
+
+## 🤝 参与贡献
+
+动手前请先阅读 [CONTRIBUTING.md](CONTRIBUTING.md)。要点：
+
+- `main` 分支受保护，**采用 PR 流程**，不接受直接推送
+- 功能开发请从最新 `main` 切出 `feat/xxx` 分支，PR 需至少 1 人 review
+- Commit message 格式：`<type>: <简短描述>`（`feat` / `fix` / `docs` / `refactor` / `perf` / `chore`）
+- 模型权重与向量索引不进仓库，请勿尝试提交
