@@ -20,9 +20,8 @@ cd Business-Assistant
 conda activate <你的环境>          # 或你惯用的虚拟环境
 pip install -r requirements.txt
 
-python scripts\download_models.py                 # 下载 BERT + Embedding 模型（约 480MB）
-python scripts\train_intent.py --epochs 3 --bs 64  # 训练意图分类器
-python scripts\build_index.py                      # 构建向量索引
+python scripts\download_models.py   # 下载全部模型：BERT + Embedding + 分类器权重（约 870MB）
+python scripts\build_index.py       # 构建向量索引
 ```
 
 另需本地安装 [Ollama](https://ollama.com)，并拉取生成模型：

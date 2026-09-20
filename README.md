@@ -16,13 +16,10 @@ conda activate <你的环境名>
 # 1. 安装依赖（建议 Python 3.10+）
 pip install -r requirements.txt
 
-# 2. 下载预训练模型（bert-base-chinese + bge-small-zh-v1.5，约 480MB）
+# 2. 下载全部模型文件（BERT + Embedding + 训练好的分类器，合计约 870MB）
 python scripts\download_models.py
 
-# 3. 训练意图分类器 -> 生成 checkpoints/intent_bert/best.pt
-python scripts\train_intent.py --epochs 3 --bs 64
-
-# 4. 构建向量索引 -> 生成 data/chroma/
+# 3. 构建向量索引 -> 生成 data/chroma/
 python scripts\build_index.py
 ```
 
@@ -32,9 +29,42 @@ python scripts\build_index.py
 ollama pull qwen3.5:9b
 ```
 
-完成以上四步后，才能用下面的一键启动。**跳过任一步都会在启动时报「文件不存在」。**
+完成以上三步后，才能用下面的一键启动。**跳过任一步都会在启动时报「文件不存在」。**
 
-> 💡 若从原开发者处直接拿到了模型文件，可手动放进 `models/` 与 `checkpoints/`，省去 2、3 步。
+> **关于分类器权重 `best.pt`（390MB）**：它由维护者发布在本仓库的
+> [Releases](https://github.com/oom-alchemists/Business-Assistant/releases) 页面，
+> `download_models.py` 会自动拉取（支持断点续传，中断后重跑即可）。
+> 想自己训练（需 GPU，约 20 分钟）：`python scripts\train_intent.py --epochs 3 --bs 64`
+>
+> 💡 若从其他成员处直接拿到了模型文件，可手动放进 `models/` 与 `checkpoints/`，省去第 2 步。
+
+### 🌐 网络问题（国内常见，必读）
+
+`git push/pull` 或 `download_models.py` 都可能报 `Connection was reset`。
+这**不是配置错误**，而是直连 GitHub 被切断——**浏览器能打开 GitHub 不代表 git 能**，
+因为 git 不读取 Windows 的系统代理设置。
+
+如果你本机有代理（Clash 默认端口是 `7890`），配置后即可：
+
+```powershell
+# 只对 GitHub 生效，不影响公司内网等其他仓库
+git config --global "http.https://github.com.proxy" "http://127.0.0.1:7890"
+```
+
+下载脚本会自动读取 `HTTPS_PROXY` 环境变量：
+
+```powershell
+$env:HTTPS_PROXY = "http://127.0.0.1:7890"
+python scripts\download_models.py
+```
+
+不再需要时撤销：
+
+```powershell
+git config --global --unset "http.https://github.com.proxy"
+```
+
+> HuggingFace 下载慢的话，可设置国内镜像：`set HF_ENDPOINT=https://hf-mirror.com`
 
 ## 🚀 一键启动
 
