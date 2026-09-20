@@ -1,0 +1,88 @@
+# ============================================================
+# 企业内部智能客服助手 - Git 忽略规则
+# ============================================================
+
+# ---------- Python 运行时 ----------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# ---------- 虚拟环境 ----------
+venv/
+.venv/
+env/
+ENV/
+.python-version
+
+# ---------- 打包/构建产物 ----------
+build/
+dist/
+*.egg-info/
+.eggs/
+wheels/
+
+# ---------- 🔴 模型权重（体积过大，从 HuggingFace 下载）----------
+# bert-base-chinese/model.safetensors = 392MB
+# bge-small-zh-v1.5/model.safetensors = 91MB
+# 二者合计已超 GitHub 100MB 单文件硬限制，push 会被直接拒绝。
+# 获取方式：python scripts/download_models.py
+models/
+# 保留占位说明（如将来需要 models/README.md，取消下一行注释）
+# !models/README.md
+
+# ---------- 🔴 训练产物（由 scripts/train_intent.py 生成）----------
+# intent_bert/best.pt = 399MB
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+
+# ---------- 🔴 向量索引（由 scripts/build_index.py 生成）----------
+data/chroma/
+data/vector_db/
+
+# ---------- 运行时产物 ----------
+logs/
+*.log
+server_err.log
+server_out.log
+
+# ---------- 同步客户端 / 系统元数据 ----------
+# Synology Drive / 群晖
+.sync/
+@eaDir/
+.SynologyWorkingDirectory/
+# Windows / macOS
+Thumbs.db
+ehthumbs.db
+desktop.ini
+.DS_Store
+._*
+.trash/
+
+# ---------- 编辑器 / IDE ----------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.vim/
+
+# ---------- 环境变量与密钥 ----------
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets.yaml
+
+# ---------- 第三方二进制 ----------
+*.exe
+*.dll
+
+# ---------- 临时文件 ----------
+*.tmp
+*.bak
+_scan*.txt

@@ -1,0 +1,43 @@
+<html style="margin:0;padding:0;font-family:'PingFang SC','Microsoft YaHei',sans-serif;">
+<div style="max-width:820px;margin:0 auto;padding:20px;">
+  <h2 style="text-align:center;color:#2c3e50;">企业智能客服 · 系统架构</h2>
+
+  <div style="display:flex;justify-content:center;margin:16px 0;">
+    <div style="background:#4a6cf7;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;">👤 用户提问："公司班车几点发车？"</div>
+  </div>
+  <div style="text-align:center;color:#999;">▼</div>
+
+  <div style="background:#eef2ff;border:1px solid #4a6cf7;border-radius:10px;padding:14px;margin:8px 0;">
+    <div style="font-weight:600;color:#4a6cf7;margin-bottom:8px;">① BERT 意图分类（bert-base-chinese · GPU · &lt;10ms）</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;">
+      <div style="background:#4a6cf7;color:#fff;padding:6px;border-radius:6px;text-align:center;font-size:12px;">行政后勤<br><b>100%</b></div>
+      <div style="background:#f0f0f0;padding:6px;border-radius:6px;text-align:center;font-size:12px;color:#666;">考勤 0%</div>
+      <div style="background:#f0f0f0;padding:6px;border-radius:6px;text-align:center;font-size:12px;color:#666;">IT 0%</div>
+      <div style="background:#f0f0f0;padding:6px;border-radius:6px;text-align:center;font-size:12px;color:#666;">财务 0%</div>
+    </div>
+  </div>
+  <div style="text-align:center;color:#999;">▼ 路由到知识库</div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0;">
+    <div style="background:#d4edda;padding:8px;border-radius:8px;text-align:center;font-size:12px;border:2px solid #28a745;">✅ 行政库<br><small>班车/食堂/宿舍</small></div>
+    <div style="background:#f8f9fa;padding:8px;border-radius:8px;text-align:center;font-size:12px;color:#999;">IT 库</div>
+    <div style="background:#f8f9fa;padding:8px;border-radius:8px;text-align:center;font-size:12px;color:#999;">财务库</div>
+    <div style="background:#f8f9fa;padding:8px;border-radius:8px;text-align:center;font-size:12px;color:#999;">HR 库</div>
+  </div>
+  <div style="text-align:center;color:#999;">▼ 读取制度文档</div>
+
+  <div style="background:#d1ecf1;border:1px solid #17a2b8;border-radius:10px;padding:14px;margin:8px 0;">
+    <div style="font-weight:600;color:#0c5460;">② Ollama qwen3.5:9b 生成（think=false）</div>
+    <div style="font-size:12px;color:#0c5460;margin-top:4px;">System Prompt 约束：仅基于文档回答，末尾标注来源</div>
+  </div>
+  <div style="text-align:center;color:#999;">▼</div>
+
+  <div style="background:#d4edda;border:1px solid #28a745;border-radius:10px;padding:14px;">
+    <div style="font-weight:600;color:#155724;">✅ 回答</div>
+    <div style="font-size:13px;color:#155724;margin-top:4px;">
+      早班 8:00 从地铁始发，晚班 19:00 从公司出发。<br>
+      <small>【来源：行政后勤】</small>
+    </div>
+  </div>
+</div>
+</html>

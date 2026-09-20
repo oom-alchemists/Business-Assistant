@@ -1,0 +1,67 @@
+# ============================================================
+# 企业内部智能客服助手 - 主配置文件
+# ============================================================
+
+# ---------- 路径配置 ----------
+paths:
+  kb_root: "data/knowledge_base"        # 知识库文档根目录（按子目录分库）
+  vector_db: "data/vector_db"           # Chroma 向量库持久化目录
+  logs: "logs"
+  eval_file: "data/eval/test_queries.jsonl"
+
+# ---------- 意图路由分层配置 ----------
+router:
+  # 第 1 层：规则关键词路由（正则命中直接返回，零模型调用）
+  rule:
+    enabled: true
+  # 第 2 层：BERT 分类器（本地推理，毫秒级）
+  bert:
+    enabled: true
+    model_name: "models/bert-base-chinese"
+    classifier_ckpt: "checkpoints/intent_bert/best.pt"  # 训练后填入
+    confidence_threshold: 0.85          # 置信度高于此值直接路由
+    device: "cuda"
+  # 第 3 层：LLM 兜底（处理模糊/多意图 query）
+  llm:
+    enabled: true
+    confidence_threshold: 0.60          # 低于此值走多库并行检索
+    temperature: 0.1
+
+# ---------- 向量检索配置 ----------
+retrieval:
+  embedding_model: "bge-m3"               # Ollama 中的 embedding 模型名
+  top_k: 5                              # 每库召回条数
+  similarity_threshold: 0.35            # 余弦相似度低于此值视为无答案（bge-m3 分数分布偏低）
+  rerank:
+    enabled: false                        # 首次 demo 先关掉；装好 FlagEmbedding 后改 true
+    model: "BAAI/bge-reranker-v2-m3"
+    top_n: 3                            # rerank 后保留条数
+
+# ---------- LLM 生成配置 ----------
+generator:
+  # 使用本地 Ollama 服务（OpenAI 兼容接口）
+  # 启动: ollama serve  （默认已在后台运行）
+  # 模型: qwen3.5:9b
+  backend: "openai_compatible"           # vllm | openai_compatible
+  vllm:
+    model_path: "models/Qwen3-8B-Instruct-AWQ"
+    base_url: "http://127.0.0.1:8000/v1"
+    max_tokens: 512
+    temperature: 0.3
+  openai_compatible:
+    base_url: "http://127.0.0.1:11434/v1"   # Ollama 默认 OpenAI 兼容端口
+    api_key: "ollama"                        # Ollama 不校验，随便填
+    model: "qwen3.5:9b"
+    max_tokens: 512
+    temperature: 0.3
+
+# ---------- 兜底策略 ----------
+fallback:
+  cross_library_search: true           # 单库低置信度时跨库并行检索
+  transfer_to_human: true               # 仍无答案时转人工
+  human_reply: "抱歉，这个问题我暂时没有把握，已为您转接人工客服或提交工单。"
+
+# ---------- 服务端口 ----------
+service:
+  api_port: 8001
+  webui_port: 8501
